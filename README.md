@@ -6,6 +6,10 @@ This is Jed Esposito's portfolio fork of [Auth0 Training's maintained lab](https
 
 The application starts without authentication because adding it is the exercise. Use sample data and a disposable development tenant. This is a teaching project, not a production application.
 
+## New to code?
+
+Start with [Your first login flow](BEGINNER.md). It explains the setup, the terms you will meet and what to try when the app works.
+
 ## Start in Codespaces
 
 1. Sign into GitHub, open **Code → Codespaces**, and create a Codespace. Check your account's included usage and billing limits before starting.
