@@ -6,7 +6,7 @@
       "file": "",
       "line": 1,
       "title": "About adding authentication",
-      "description": "## About adding authentication\nNow that the application is set up in the Auth0 dashboard, and the application's codebase is configured with the correct parameters to connect to it, we're ready to add authentication. \n\nTo do this, the application will make use of some Express middleware that will provide OpenID Connect based authentication.\n\nSpecifically, the middleware automatically defines three routes in the application:\n\n- #### The login route, /login\n    This route builds the OpenID Connect request and redirects to the authorization server (In this case, Auth0). For this to work properly, the middleware needs to include specific parameters with the request. You will configure these values using environment variables in the next step.\n- #### /callback\n    This handles the authorization server's (Auth0) response and performs required validations like nonce, state, and token verification.\n- #### /logout\n    This terminates the session in the application and redirects to the authorization server (Auth0) to end the session there as well.\n\nThe middleware will also augment Express's request object with additional properties whenever the request is authenticated. For example, req.openid.user is a property that will contain user information."
+      "description": "## About adding authentication\nNow that the application is set up in the Auth0 dashboard, and the application's codebase is configured with the correct parameters to connect to it, we're ready to add authentication. \n\nTo do this, the application will make use of some Express middleware that will provide OpenID Connect based authentication.\n\nSpecifically, the middleware automatically defines three routes in the application:\n\n- #### The login route, /login\n    This route builds the OpenID Connect request and redirects to the authorization server (In this case, Auth0). For this to work properly, the middleware needs to include specific parameters with the request. You will configure these values using environment variables in the next step.\n- #### /callback\n    This handles the authorization server's (Auth0) response and performs required validations like nonce, state, and token verification.\n- #### /logout\n    This terminates the session in the application and redirects to the authorization server (Auth0) to end the session there as well.\n\nThe middleware will also augment Express's request object with additional properties whenever the request is authenticated. For example, req.oidc.user is a property that will contain user information."
     },
     {
       "file": "src/web-app/index.js",
@@ -85,7 +85,7 @@
     },
     {
       "file": "src/web-app/index.js",
-      "description": "## About the secret key\n\nThis is used to derive an encryption key for the session cookie stored by Express's session middleware. Note that the same value is used by the session middleware. The auth middleware will use this secret value to sign the transient cookies used by the login callback. \n\nThe value can be obtained directly from the **SESSION_SECRET** environment variable and this key can be omitted. We are passing this directly for this sample lab to make it clear the value is being used by the middleware. \n\nThese cookies are written to the user's browser. If there are multiple webservers that need to interpret the cookie, it's important that the session secret be the same on each respective environment.",
+      "description": "## About the session secret\n\nThe authentication middleware uses this key to protect the browser session cookie. The app creates a fresh random key when you start it. For a lab, that means restarting the app signs you out.\n\nTo preserve sessions across restarts, set a strong random SESSION_SECRET in src/web-app/.env. Keep that file private. Never commit a session key or paste it into a screenshot. We pass the key explicitly here so you can see how the app uses it.",
       "line": 46,
       "selection": {
         "start": {
@@ -100,7 +100,7 @@
     },
     {
       "file": "src/web-app/index.js",
-      "description": "## About the baseURL\nThis is the publicly accessible URL for the application. The middleware uses this to construct URLs pointing back to the application for consumption by the authorization server. \n\nSimilar to the session secret, the value can be obtained directly from the **APP_URL** environment variable and this key can be omitted. We are passing this directly for this sample lab to make it clear the value is being used by the middleware.",
+      "description": "## About the baseURL\n\nThis is the public address of your application. The middleware uses it when building the callback URL. Our env-config.js computes APP_URL from the Codespaces forwarding address, or localhost when you run the lab locally. We pass that value as baseURL.\n\nThe middleware\u2019s own environment-variable name is BASE_URL. APP_URL is a name used by this lab.",
       "line": 48,
       "selection": {
         "start": {
@@ -145,7 +145,7 @@
     },
     {
       "file": "src/web-app/index.js",
-      "description": "## About environment variables\n\nYou'll notice that in the code we inserted, all of the keys are passed explicitly and environment variables provide the values. This is because we've specified the values for these keys in our environment file for the application (env-config.js). This allows us to tweak a couple values based in the environment at runtime.\n\nThe **secret**, **baseURL**, **issuerBaseURL** and **clientID** don't actually have to be explicitly passed to the auth middleware if they are available as environment varables in the environment the application is running. The middleware is able to recognize them from there if they are formatted as **SESSION_SECRET**, **APP_URL**, **ISSUER_BASE_URL** and **CLIENT_ID** respectively. We've specified them in this in-app configuration for demonstration purposes.",
+      "description": "## About environment variables\n\nOur env-config.js reads the tenant and application settings and works out the public address. We pass those values explicitly into the authentication middleware so you can see their purpose.\n\nThe middleware can also read SECRET, BASE_URL, ISSUER_BASE_URL, CLIENT_ID and CLIENT_SECRET from the environment. Its names for the session key and public address differ from the SESSION_SECRET and APP_URL names used in this lab. The client secret comes from the .env file generated by the extension.",
       "line": 51,
       "selection": {
         "start": {
@@ -190,7 +190,7 @@
       "file": "",
       "line": 1,
       "title": "View your profile",
-      "description": "## View your profile\nAfter authentication, the application displays the profile image associated with the authenticated user and addresses them by name. The username is now listed and links to a profile page displaying the user's profile information.\n\n1. Select the **username** link on the page to view the profile.\n    \n2. After having a look through the information, select the **Logout** link to log out of the application. \n\n> Notice that you are immediately prompted to authenticate again. This is because we applied the auth middleware to all routes in the application. So, the auth middleware is intercepting all requests and forcing authentication. Let's make some adjustments to the application to correct this."
+      "description": "## View your profile\nAfter authentication, the application displays the profile image associated with the authenticated user and addresses them by name. The username is now listed and links to a profile page displaying the user's profile information.\n\n1. Return to the home page and select the **username** link in its greeting to view the profile.\n    \n2. After having a look through the information, select the **Logout** link to log out of the application. \n\n> Notice that you are immediately prompted to authenticate again. This is because we applied the auth middleware to all routes in the application. So, the auth middleware is intercepting all requests and forcing authentication. Let's make some adjustments to the application to correct this."
     },
     {
       "file": "",

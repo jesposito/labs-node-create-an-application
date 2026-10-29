@@ -13,10 +13,10 @@
     "url": "git+https://github.com/auth0-training/labs-node-create-an-application.git"
   },
   "scripts": {
-    "init": "concurrently \"npm:init:dependencies\"",
-    "init:dependencies": "concurrently \"npm:web-app:dependencies\"",
+    "init": "npm ci --prefix ./src/web-app",
     "web-app:start": "npm start --prefix ./src/web-app",
-    "web-app:dependencies": "npm install --prefix ./src/web-app"
+    "web-app:dependencies": "npm ci --prefix ./src/web-app",
+    "test": "node --test test/*.test.cjs"
   },
   "keywords": [
     "auth0",
@@ -28,11 +28,6 @@
     "samples",
     "labs"
   ],
-  "dependencies": {
-    "concurrently": "^7.3.0",
-    "eslint": "^8.20.0",
-    "prettier": "^2.7.1"
-  },
   "prettier": {
     "printWidth": 80,
     "singleQuote": true,
@@ -44,5 +39,11 @@
     "tabWidth": 2,
     "trailingComma": "es5",
     "useTabs": false
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
   }
 }

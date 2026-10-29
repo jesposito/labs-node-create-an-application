@@ -14,11 +14,7 @@
     "url": "git+https://github.com/auth0-training/labs-node-create-an-application.git"
   },
   "scripts": {
-    "start": "PORT=$npm_package_config_port SESSION_SECRET=$npm_package_config_session_secret node index"
-  },
-  "config": {
-    "port": 37500,
-    "session_secret": "a long, randomly-generated string stored in env"
+    "start": "node index"
   },
   "keywords": [
     "auth0",
@@ -31,7 +27,6 @@
     "labs"
   ],
   "dependencies": {
-    "axios": "^0.27.2",
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.4",
     "dotenv": "16.0.1",
@@ -39,7 +34,7 @@
     "express-openid-connect": "^2.7.3",
     "express-session": "^1.17.3",
     "http-errors": "~2.0.0",
-    "morgan": "~1.10.0",
-    "pug": "3.0.2"
+    "morgan": "^1.12.1",
+    "pug": "^3.0.4"
   }
 }

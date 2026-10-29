@@ -1,53 +1,52 @@
-# Lab: Configure Web Applications with Auth0
+# Configure a web application with Auth0
 
-In this [Okta Learning](https://learning.okta.com/) hands-on lab, learners will use Auth0 to add authentication to a web application. By the end, users will be able to to authenticate to the application using Auth0's Universal Login Page.
+Add login to a small Express expenses app, then choose which routes require authentication. CodeTour guides you through the code inside VS Code. The Auth0 Labs extension connects the exercise to your own development tenant.
 
---- 
+This is Jed Esposito's portfolio fork of [Auth0 Training's maintained lab](https://github.com/auth0-training/labs-node-create-an-application). I authored the original CodeTours and worked with Bobby Johnson on features in the lab extension. Bobby developed the extension. Auth0 colleagues have continued maintaining the lab since my time there; their history and the original licence are preserved here.
 
-# How to Get Started with this Lab
+The application starts without authentication because adding it is the exercise. Use sample data and a disposable development tenant. This is a teaching project, not a production application.
 
-## Create Required Free Accounts
+## Start in Codespaces
 
-1. A GitHub account with Codespaces access (you can use the free plan, which gives you 60 hours of use per month). Create a free account [here](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account) if you do not already have one.
+1. Sign into GitHub, open **Code → Codespaces**, and create a Codespace. Check your account's included usage and billing limits before starting.
+2. Wait for the container and dependency installation to finish. The container uses Node 22, and package versions are recorded in lockfiles.
+3. Follow the CodeTour prompt to sign into the Auth0 Labs extension. Choose a development tenant you can safely use for this exercise.
+4. Register the application as **Lab: Web App**, exactly as the tour describes. The extension uses that name to find its configuration.
+5. Continue through the tour. It explains an expected callback-address error and then asks you to protect the expenses and profile routes.
+6. Stop the Codespace when finished. Delete it when you no longer need its files; commit anything you want to keep first.
 
-    **⚠️ Note to internal Okta employees: Do NOT use your EMU (Enterprise-managed user) account since Codespaces are disabled.**
+The lab asks you to make the forwarded app port public. Keep it open only while doing the exercise and use synthetic accounts and data. Your development tenant and application credentials stay in your workspace's ignored `.env` file.
 
-2. An Auth0 account: You'll also need an Auth0 account. You should use a new account for our labs so that you have a fresh tenant. Register for one [here](https://auth0.com/signup).
+## Run locally
 
-## Accessing and Working with Auth0 Labs
+Use Node 22 or newer. Install VS Code with CodeTour (`vsls-contrib.codetour`) and the Auth0 Labs extension (`auth0.vscode-labs`), then open this folder. Alternatively, open the included development container with VS Code and Docker.
 
-1. **After logging into GitHub, open the lab repo in a Codespace:** From the *Code* dropdown menu of this branch, toggle to the *Codespaces* tab. Click the plus sign to create and open the lab in a Codespace. A new tab will open, and Codespaces will begin configuring the lab environment. Wait for the environment to finish building.
-2. **Begin working with the lab:** Once the environment is ready you'll see a Codetour popup with instructions for connecting the lab to your Auth0 account. This can take some time, as the environment is installing several extensions and libraries to facilitate the lab. Once it is complete, you can open the Codetour to view all steps using the panel in the lower right. At this point, you should follow the remainder of the instructions within Codetour!
+```sh
+npm ci
+npm run init
+npm run web-app:start
+```
 
-### Notes:
-- **If you'd like to save your work to your own fork:** You can commit and push your changes to a fork of this repo. (See: [Using Source Control in Your Codespace](https://docs.github.com/en/codespaces/developing-in-codespaces/using-source-control-in-your-codespace)).
-- **Close the Codespace when you're finished with the lab:** Codespaces come with a set amount of free usage. To avoid using all of your free use allocation, be sure to return to the forked repo, select the "Code" dropdown, select the dots next to your open Codespace, and select "Delete." This will not delete your forked repository. You can keep that forever, and open a new Codespace whenever you like.
+The app opens at `http://localhost:37500`. The extension's **Auth0: Configure Local Environment** command writes `src/web-app/.env` after you register **Lab: Web App** in the selected tenant. Missing `.env` usually means the tenant or application name does not match. The [Auth0 lab FAQ](https://auth0-training.github.io/) covers account and extension setup.
 
----
+The app generates a fresh cookie key at startup. Set your own strong `SESSION_SECRET` in the ignored `.env` file if you want sessions to survive a restart. Keep credentials out of screenshots and source control.
 
-## What is Auth0?
+## What changed in this fork
 
-Auth0 helps you to:
+- Corrected the public Codespaces address used by the redirect middleware and kept the callback path and query intact.
+- Replaced the shared placeholder cookie key with a fresh local key, respected configured environment values, and removed key logging.
+- Pinned the development container to a named Node LTS line and moved setup to container creation. Installs use committed lockfiles.
+- Removed an unused HTTP client and updated app dependencies. Corrected explanations of middleware environment-variable names and profile navigation.
+- Added tests that replay the six CodeTour edits and exercise the completed app against a local OpenID Connect provider fixture, including login, protected routes, logout and invalid callback state.
 
-* Add authentication with [multiple authentication sources](https://auth0.com/docs/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, among others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional [username/password databases](https://auth0.com/docs/connections/database/custom-db).
-* Add support for [linking different user accounts](https://auth0.com/docs/link-accounts) with the same user.
-* Support for generating signed [JSON Web Tokens](https://auth0.com/docs/jwt) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when, and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://auth0.com/docs/rules/current).
+Run `npm test` for the checks. The local provider fixture does not contact Auth0 or verify the VS Code extension's live tenant connection. A real Auth0 tenant is still needed for that check.
 
-## Issue Reporting
+## History and maintenance
 
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+My original tour work is visible in commits such as [the first draft](https://github.com/auth0-training/labs-node-create-an-application/commit/551cb79), [adding executable commands](https://github.com/auth0-training/labs-node-create-an-application/commit/81dc27e) and [reworking the environment-configuration steps](https://github.com/auth0-training/labs-node-create-an-application/commit/fec8158). The upstream lab had updates in July 2026 when this fork was reviewed.
 
-## Author
+This fork is an independent portfolio example. Auth0's own training and extension remain maintained by their respective contributors. Report issues with this fork here; use upstream's instructions for the official lab.
 
-[Auth0](https://auth0.com)
+## Licence
 
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+MIT. See [LICENSE](LICENSE) for Auth0's copyright and third-party notices. Original authorship and contribution history remain intact.
