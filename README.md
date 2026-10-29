@@ -43,7 +43,9 @@ The app generates a fresh cookie key at startup. Set your own strong `SESSION_SE
 - Removed an unused HTTP client and updated app dependencies. Corrected explanations of middleware environment-variable names and profile navigation.
 - Added tests that replay the six CodeTour edits and exercise the completed app against a local OpenID Connect provider fixture, including login, protected routes, logout and invalid callback state.
 
-Run `npm test` for the checks. The local provider fixture does not contact Auth0 or verify the VS Code extension's live tenant connection. A real Auth0 tenant is still needed for that check.
+Run `npm test` for the checks. The local provider fixture does not contact Auth0 or verify the VS Code extension's live tenant connection.
+
+On 30 October 2026, I also checked the completed app in a browser against a disposable Auth0 development tenant: anonymous access, redirect to login, return to expenses after authentication, profile, logout and a fresh login requirement on private routes. I reproduced the expected callback-address error and restored the correct setting. The app passed those checks. The extension's interactive sign-in and the full browser-based Codespaces journey still need a separate check.
 
 ## History and maintenance
 

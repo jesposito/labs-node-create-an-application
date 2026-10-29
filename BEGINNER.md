@@ -9,7 +9,7 @@ The app tracks two imaginary expenses: pizza and coffee for a coding session. By
 - A personal GitHub account. GitHub Codespaces supplies the editor and computer in your browser, so you don't need to install a development environment. Check your included Codespaces usage before starting; stop the workspace when you're finished.
 - An Auth0 account with a development tenant for practice. A tenant is your own area for configuring applications and login. Use sample data for this exercise.
 
-You do not need an Alexa device, a paid course, or previous Auth0 experience. The guided steps explain the code you add.
+The guided steps explain the code you add. No previous Auth0 experience is needed.
 
 ## Get the workspace ready
 
